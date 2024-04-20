@@ -10,6 +10,11 @@ public class Poisson {
     private float coordX;
     private float coordY;
     private Nourriture plusProcheNourriture;
+    private int currentJitterFrame;
+    private double currentJitterX;
+    private double currentJitterY;
+    private Class nourriturePreferee;
+    private Color color;
 
     public Poisson(float speed, float coordX, float coordY) {
         this.speed = speed;
@@ -18,6 +23,25 @@ public class Poisson {
     }
 
     public void step() {
+        if (currentJitterFrame == 0){
+            if (Math.random() <= jitterChance){
+                currentJitterFrame = jitterDuration;
+                currentJitterX = Math.random();
+                currentJitterY = Math.random();
+                double magnitude = Math.sqrt(currentJitterX * currentJitterX + currentJitterY * currentJitterY);
+                if (magnitude >= 0.01)
+                {
+                currentJitterX /= magnitude;
+                currentJitterY /= magnitude;
+                }
+            }
+        }
+        if (currentJitterFrame != 0){
+            currentJitterFrame -= 1;
+            coordX += speed * currentJitterX;
+            coordY += speed * currentJitterY;
+            return;
+        }
         if (plusProcheNourriture == null)
             return;
         if (!plusProcheNourriture.isAvailable()){

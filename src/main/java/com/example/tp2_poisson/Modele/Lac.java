@@ -15,9 +15,9 @@ public class Lac {
         nourritures = new ArrayList<Nourriture>();
     }
 
-    public Poisson addPoisson(float speed, float X, float Y){
+    public Poisson addPoisson(Class desiredType, float speed, float X, float Y){
         PoissonManager newPoisson = new PoissonManager(this);
-        Poisson poisson = new Poisson(speed, X, Y);
+        Poisson poisson = PoissonFactory.newPoisson(desiredType, speed, X, Y);
         poissons.add(poisson);
         newPoisson.SetPoisson(poisson);
         Thread t = new Thread(newPoisson);
@@ -25,8 +25,8 @@ public class Lac {
         return poisson;
     }
 
-    public Nourriture addNourriture(float X, float Y){
-        Nourriture nourriture = new Nourriture(X,Y);
+    public Nourriture addNourriture(Class desiredType, float X, float Y){
+        Nourriture nourriture = NourritureFactory.newNourriture(desiredType, X, Y);
         nourritures.add(nourriture);
         return nourriture;
     }
