@@ -1,5 +1,6 @@
-package com.example.tp2_poisson.Interface;
+package com.example.tp2_poisson.graphismes;
 
+import com.example.tp2_poisson.Fenetre;
 import javafx.application.Platform;
 
 public class FenetreMannager implements Runnable {

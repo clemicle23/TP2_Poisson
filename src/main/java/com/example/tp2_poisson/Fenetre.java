@@ -1,15 +1,14 @@
-package com.example.tp2_poisson.Interface;
+package com.example.tp2_poisson;
 
-import com.example.tp2_poisson.Modele.*;
-import com.example.tp2_poisson.Interface.dessins.DessinNourriture;
-import com.example.tp2_poisson.Interface.dessins.DessinPoisson;
+import com.example.tp2_poisson.graphismes.FenetreMannager;
+import com.example.tp2_poisson.graphismes.dessins.DessinNourriture;
+import com.example.tp2_poisson.graphismes.dessins.DessinPoisson;
+import com.example.tp2_poisson.modele.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.GridPane;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
@@ -26,7 +25,7 @@ public class Fenetre extends Application {
     private Lac lac;
     private Pane drawPane;
     private GridPane buttonPane;
-    private float taillePoisson = 5;
+    private float taillePoisson = 6;
     private float tailleNourriture = 3;
     private String paletteType;
     private String paletteCouleur;
@@ -48,7 +47,7 @@ public class Fenetre extends Application {
         setupButtonPane();
 
         drawPane = new Pane();
-        drawPane.setStyle("-fx-background-color: #4b4bfc;");
+        drawPane.setStyle("-fx-background-color: #5a5af6;");
 
         screen.setLeft(buttonPane);
         screen.setCenter(drawPane);
@@ -57,20 +56,23 @@ public class Fenetre extends Application {
 
         stage.setTitle("Hello!");
 
-        scene.setOnMouseClicked(event -> {
-            double mousex = event.getSceneX();
-            double mousey = event.getSceneY();
+        drawPane.setOnMouseClicked(event -> {
+            double mousex = event.getSceneX() - drawPane.getLayoutX();
+            double mousey = event.getSceneY() - - drawPane.getLayoutY();
 
 
             switch (paletteType){
                 case ("poisson"):
                     Poisson nouveauPoisson = null;
                     switch (paletteCouleur){
-                        case("Rouge"):
+                        case("rouge"):
                             nouveauPoisson = lac.addPoisson(PoissonRouge.class, 0.1f, (float) mousex, (float) mousey);
                             break;
-                        case("Bleu"):
+                        case("bleu"):
                             nouveauPoisson = lac.addPoisson(PoissonBleu.class,0.1f, (float) mousex, (float) mousey);
+                            break;
+                        case("vert"):
+                            nouveauPoisson = lac.addPoisson(PoissonVert.class,0.1f, (float) mousex, (float) mousey);
                             break;
                     }
                     Rectangle poissonRectangle = new Rectangle(nouveauPoisson.getCoordX(),nouveauPoisson.getCoordY(),taillePoisson,taillePoisson);
@@ -83,11 +85,14 @@ public class Fenetre extends Application {
                 case ("nourriture"):
                     Nourriture nouvelleNourriture = null;
                     switch (paletteCouleur){
-                        case("Rouge"):
+                        case("rouge"):
                             nouvelleNourriture = lac.addNourriture(NourritureRouge.class, (float) mousex,(float) mousey);
                             break;
-                        case("Bleu"):
+                        case("bleu"):
                             nouvelleNourriture = lac.addNourriture(NourritureBleu.class, (float) mousex,(float) mousey);
+                            break;
+                        case("vert"):
+                            nouvelleNourriture = lac.addNourriture(NourritureVert.class, (float) mousex,(float) mousey);
                             break;
                     }
                     Rectangle nourritureRectangle = new Rectangle(mousex, mousey,tailleNourriture,tailleNourriture);
@@ -114,24 +119,29 @@ public class Fenetre extends Application {
         Label type = new Label("Type d'entité :");
         Label couleur = new Label("Couleur de l'entité :");
 
-        Button setPalettePoisson = new Button("Crée un poisson rouge");
+        Button setPalettePoisson = new Button("Poisson");
         setPalettePoisson.setOnAction((e) -> {
             this.paletteType = "poisson";
         });
 
-        Button setPaletteNourriture = new Button("Crée un poisson bleu");
+        Button setPaletteNourriture = new Button("Nourriture");
         setPaletteNourriture.setOnAction((e) -> {
             this.paletteType = "nourriture";
         });
 
-        Button setPaletteRouge = new Button("Crée une nourriture rouge");
+        Button setPaletteRouge = new Button("Rouge");
         setPaletteRouge.setOnAction((e) -> {
-            this.paletteType = "rouge";
+            this.paletteCouleur = "rouge";
         });
 
-        Button setPaletteBleu = new Button("Crée une nourriture bleue");
+        Button setPaletteBleu = new Button("Bleu");
         setPaletteBleu.setOnAction((e) -> {
-            this.paletteType = "bleu";
+            this.paletteCouleur = "bleu";
+        });
+
+        Button setPaletteVert = new Button("Vert");
+        setPaletteVert.setOnAction((e) -> {
+            this.paletteCouleur = "vert";
         });
 
         buttonPane.add(type,3,3);
@@ -140,6 +150,7 @@ public class Fenetre extends Application {
         buttonPane.add(couleur,3,5);
         buttonPane.add(setPaletteRouge,3,6);
         buttonPane.add(setPaletteBleu,4,6);
+        buttonPane.add(setPaletteVert,5,6);
 
     }
 

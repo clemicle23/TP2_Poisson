@@ -1,6 +1,8 @@
-package com.example.tp2_poisson.Modele;
+package com.example.tp2_poisson.modele;
 
-import com.example.tp2_poisson.Interface.Fenetre;
+import com.example.tp2_poisson.Fenetre;
+import com.example.tp2_poisson.modele.factory.NourritureFactory;
+import com.example.tp2_poisson.modele.factory.PoissonFactory;
 
 import java.util.ArrayList;
 
@@ -48,10 +50,12 @@ public class Lac {
             poisson.setPlusProcheNourriture(null);
             Nourriture nourritureActuelle = poisson.getPlusProcheNourriture();
             double minDistance = nourritureActuelle != null ? distance(poisson, nourritureActuelle) : Double.MAX_VALUE;
-            for (Nourriture nourriture : nourritures){
+            for (Nourriture nourriture : nourritures) {
+                if (nourriture == null)
+                    continue;
                 if (!nourriture.isAvailable())
                     continue;
-                if (poisson.getNourriturePreferee() != nourritureActuelle.getClass())
+                if (poisson.getNourriturePreferee() != nourriture.getClass())
                     continue;
                 double nouvelleDistance = distance(poisson,nourriture);
                 if (minDistance > nouvelleDistance){

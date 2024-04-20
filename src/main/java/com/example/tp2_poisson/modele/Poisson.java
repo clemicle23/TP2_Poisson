@@ -1,4 +1,4 @@
-package com.example.tp2_poisson.Modele;
+package com.example.tp2_poisson.modele;
 
 import javafx.scene.paint.Color;
 
@@ -23,6 +23,12 @@ public class Poisson {
     }
 
     public void step() {
+        if (plusProcheNourriture == null)
+            return;
+        if (!plusProcheNourriture.isAvailable()){
+            plusProcheNourriture = null;
+            return;
+        }
         if (currentJitterFrame == 0){
             if (Math.random() <= jitterChance){
                 currentJitterFrame = jitterDuration;
@@ -31,8 +37,8 @@ public class Poisson {
                 double magnitude = Math.sqrt(currentJitterX * currentJitterX + currentJitterY * currentJitterY);
                 if (magnitude >= 0.01)
                 {
-                currentJitterX /= magnitude;
-                currentJitterY /= magnitude;
+                    currentJitterX /= magnitude;
+                    currentJitterY /= magnitude;
                 }
             }
         }
@@ -42,12 +48,7 @@ public class Poisson {
             coordY += speed * currentJitterY;
             return;
         }
-        if (plusProcheNourriture == null)
-            return;
-        if (!plusProcheNourriture.isAvailable()){
-            plusProcheNourriture = null;
-            return;
-        }
+
         float deltaX = plusProcheNourriture.coordX - coordX;
         float deltaY = plusProcheNourriture.coordY - coordY;
         double magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);

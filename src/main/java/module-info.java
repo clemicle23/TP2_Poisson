@@ -9,10 +9,14 @@ module com.example.tp2_poisson {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
 
-    exports com.example.tp2_poisson.Interface.dessins;
-    opens com.example.tp2_poisson.Interface.dessins to javafx.fxml;
-    exports com.example.tp2_poisson.Interface;
-    opens com.example.tp2_poisson.Interface to javafx.fxml;
-    exports com.example.tp2_poisson.Modele;
-    opens com.example.tp2_poisson.Modele to javafx.fxml;
+    opens com.example.tp2_poisson to javafx.fxml;
+    exports com.example.tp2_poisson;
+    exports com.example.tp2_poisson.graphismes;
+    opens com.example.tp2_poisson.graphismes to javafx.fxml;
+    exports com.example.tp2_poisson.graphismes.dessins;
+    opens com.example.tp2_poisson.graphismes.dessins to javafx.fxml;
+    exports com.example.tp2_poisson.modele;
+    opens com.example.tp2_poisson.modele to javafx.fxml;
+    exports com.example.tp2_poisson.modele.factory;
+    opens com.example.tp2_poisson.modele.factory to javafx.fxml;
 }

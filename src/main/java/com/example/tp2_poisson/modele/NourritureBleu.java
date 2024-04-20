@@ -1,4 +1,4 @@
-package com.example.tp2_poisson.Modele;
+package com.example.tp2_poisson.modele;
 
 import javafx.scene.paint.Color;
 

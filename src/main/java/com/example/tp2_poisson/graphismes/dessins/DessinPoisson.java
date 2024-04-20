@@ -1,6 +1,6 @@
-package com.example.tp2_poisson.Interface.dessins;
+package com.example.tp2_poisson.graphismes.dessins;
 
-import com.example.tp2_poisson.Modele.Poisson;
+import com.example.tp2_poisson.modele.Poisson;
 import javafx.scene.shape.Rectangle;
 
 public class DessinPoisson {
