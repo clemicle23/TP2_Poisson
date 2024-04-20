@@ -5,8 +5,12 @@ import com.example.tp2_poisson.modele.factory.NourritureFactory;
 import com.example.tp2_poisson.modele.factory.PoissonFactory;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.*;
 
-public class Lac {
+public class Lac{
+    private final ReadWriteLock rwlock = new ReentrantReadWriteLock(true);
+    private final Lock rlock = rwlock.readLock();
+    private final Lock wlock = rwlock.writeLock();
     private ArrayList<Poisson> poissons;
     private ArrayList<Nourriture> nourritures;
     private Fenetre fenetre;
@@ -42,11 +46,19 @@ public class Lac {
     }
 
     public void cleanNourriture(){
-        if (nourritures == null) return;
-        nourritures.removeIf(n -> !n.isAvailable());
+        wlock.lock();
+        try {
+            if (nourritures == null) return;
+            nourritures.removeIf(n -> !n.isAvailable());
+        }
+        finally{
+            wlock.unlock();
+        }
     }
 
     public void plusProcheNourriture(Poisson poisson){
+        rlock.lock();
+        try{
             poisson.setPlusProcheNourriture(null);
             Nourriture nourritureActuelle = poisson.getPlusProcheNourriture();
             double minDistance = nourritureActuelle != null ? distance(poisson, nourritureActuelle) : Double.MAX_VALUE;
@@ -57,12 +69,16 @@ public class Lac {
                     continue;
                 if (poisson.getNourriturePreferee() != nourriture.getClass())
                     continue;
-                double nouvelleDistance = distance(poisson,nourriture);
-                if (minDistance > nouvelleDistance){
+                double nouvelleDistance = distance(poisson, nourriture);
+                if (minDistance > nouvelleDistance) {
                     minDistance = nouvelleDistance;
                     poisson.setPlusProcheNourriture(nourriture);
                 }
             }
+        }
+        finally{
+            rlock.unlock();
+        }
     }
 
     public static double distance(Poisson poisson, Nourriture nourriture){

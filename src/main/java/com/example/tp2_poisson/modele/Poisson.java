@@ -3,8 +3,8 @@ package com.example.tp2_poisson.modele;
 import javafx.scene.paint.Color;
 
 public class Poisson {
-    private static int jitterDuration = 5;
-    private static float jitterChance = 0.05f;
+    private static int jitterDuration = 50;
+    private static float jitterChance = 0.005f;
 
     private float speed;
     private float coordX;
