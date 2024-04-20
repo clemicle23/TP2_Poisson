@@ -1,4 +1,4 @@
-package com.example.tp2_poisson.Modèle;
+package com.example.tp2_poisson.Modele;
 
 public class PoissonManager implements Runnable {
     private Poisson poisson;

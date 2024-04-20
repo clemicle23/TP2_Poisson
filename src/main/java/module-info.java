@@ -15,6 +15,6 @@ module com.example.tp2_poisson {
     opens com.example.tp2_poisson.Interface.dessins to javafx.fxml;
     exports com.example.tp2_poisson.Interface;
     opens com.example.tp2_poisson.Interface to javafx.fxml;
-    exports com.example.tp2_poisson.Modèle;
-    opens com.example.tp2_poisson.Modèle to javafx.fxml;
+    exports com.example.tp2_poisson.Modele;
+    opens com.example.tp2_poisson.Modele to javafx.fxml;
 }

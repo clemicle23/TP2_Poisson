@@ -1,4 +1,4 @@
-package com.example.tp2_poisson.Modèle;
+package com.example.tp2_poisson.Modele;
 
 import com.example.tp2_poisson.Interface.Fenetre;
 
@@ -43,12 +43,15 @@ public class Lac {
         if (nourritures == null) return;
         nourritures.removeIf(n -> !n.isAvailable());
     }
+
     public void plusProcheNourriture(Poisson poisson){
             poisson.setPlusProcheNourriture(null);
             Nourriture nourritureActuelle = poisson.getPlusProcheNourriture();
             double minDistance = nourritureActuelle != null ? distance(poisson, nourritureActuelle) : Double.MAX_VALUE;
             for (Nourriture nourriture : nourritures){
                 if (!nourriture.isAvailable())
+                    continue;
+                if (poisson.getNourriturePreferee() != nourritureActuelle.getClass())
                     continue;
                 double nouvelleDistance = distance(poisson,nourriture);
                 if (minDistance > nouvelleDistance){

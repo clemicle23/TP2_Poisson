@@ -1,9 +1,12 @@
-package com.example.tp2_poisson.Modèle;
+package com.example.tp2_poisson.Modele;
+
+import javafx.scene.paint.Color;
 
 public class Nourriture {
     public float coordX;
     public float coordY;
     private boolean available = true;
+    private Color color;
 
     public Nourriture(float coordX, float coordY){
         this.coordX = coordX;
@@ -15,6 +18,12 @@ public class Nourriture {
     }
     public float getCoordY(){
         return coordY;
+    }
+    public Color getColor(){
+        return color;
+    }
+    public void setColor(Color color){
+        this.color = color;
     }
 
     public synchronized boolean eat(){

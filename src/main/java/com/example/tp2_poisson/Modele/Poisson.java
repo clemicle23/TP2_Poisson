@@ -1,6 +1,11 @@
-package com.example.tp2_poisson.Modèle;
+package com.example.tp2_poisson.Modele;
+
+import javafx.scene.paint.Color;
 
 public class Poisson {
+    private static int jitterDuration = 5;
+    private static float jitterChance = 0.05f;
+
     private float speed;
     private float coordX;
     private float coordY;
@@ -39,6 +44,20 @@ public class Poisson {
     public float getCoordY(){
         return coordY;
     }
+    public Color getColor(){
+        return color;
+    }
+    public void setColor(Color color){
+        this.color = color;
+    }
+
+    public Class getNourriturePreferee(){
+        return nourriturePreferee;
+    }
+
+    public void setNourriturePreferee(Class nourriturePreferee){
+        this.nourriturePreferee = nourriturePreferee;
+    }
 
     public void setPlusProcheNourriture(Nourriture nourriture){
         this.plusProcheNourriture = nourriture;
@@ -54,4 +73,6 @@ public class Poisson {
             plusProcheNourriture = null;
         }
     }
+
+
 }
