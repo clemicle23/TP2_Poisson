@@ -2,6 +2,11 @@ package com.example.tp2_poisson.modele;
 
 import javafx.scene.paint.Color;
 
+/**
+ * Représente un poisson et fournit les méthodes nécessaires à sa simulation
+ *
+ */
+
 public class Poisson {
     private static int jitterDuration = 50;
     private static float jitterChance = 0.005f;
@@ -22,6 +27,12 @@ public class Poisson {
         this.coordY = coordY;
     }
 
+    /**
+     * Simule une frame
+     * Le poisson essaie de faire un sursaut aléatoire
+     * Si il ne sursaute pas, il avance vers la nourriture la plus proche si elle existe
+     * Si il arrive assez proche de la nourriture, il essaie de la manger
+     */
     public void step() {
         if (plusProcheNourriture == null)
             return;
@@ -91,8 +102,11 @@ public class Poisson {
         return plusProcheNourriture;
     }
 
+    /**
+     * Mange la nourriture ssi elle est disponible
+     * @param nourriture la nourriture à manger
+     */
     public void tryEatFood(Nourriture nourriture){
-        //System.out.println("Poisson " + Thread.currentThread().getId() + " essaie de manger en position " + coordX + " " + coordY);
         if (nourriture.eat()){
             System.out.println("Poisson " + Thread.currentThread().getId() + " a mangé");
             plusProcheNourriture = null;

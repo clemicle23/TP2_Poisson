@@ -1,26 +1,28 @@
 package com.example.tp2_poisson.modele.factory;
-
 import com.example.tp2_poisson.modele.Nourriture;
-import com.example.tp2_poisson.modele.NourritureBleu;
-import com.example.tp2_poisson.modele.NourritureRouge;
-import com.example.tp2_poisson.modele.NourritureVert;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
+/**
+ * Instantie tous les types de nourriture
+ */
 public class NourritureFactory {
-    private static Map<Class, ConcreteNourritureFactory> NourritureClasses = new HashMap<>();
 
-    static{
-        NourritureClasses.put(NourritureRouge.class, new NourritureRougeFactory());
-        NourritureClasses.put(NourritureBleu.class, new NourritureBleuFactory());
-        NourritureClasses.put(NourritureVert.class, new NourritureVertFactory());
-    }
-
-    public static Nourriture newNourriture(Class c, float X, float Y) throws IllegalArgumentException{
-        if (!NourritureClasses.containsKey(c)){
-            throw new IllegalArgumentException("Invalid Nourriture " + c);
+    public static Nourriture newNourriture(Class c, float X, float Y) throws NoSuchMethodException,
+            InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        //Vérification que le type désiré est un sous-type de Nourriture
+        if (c.getSuperclass().getCanonicalName() != Nourriture.class.getCanonicalName()){
+            throw new IllegalArgumentException("Invalid Nourriture " + c.getSimpleName());
         }
-        return (Nourriture) NourritureClasses.get(c).build(X, Y);
+        //Récupération du constructeur et instantiation de l'objet
+        Class[] parameterTypes = {float.class, float.class,};
+        try{
+            Constructor constructor = c.getConstructor(parameterTypes);
+            return (Nourriture) constructor.newInstance(X, Y);
+        }
+        catch(NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e){
+            throw(e);
+        }
     }
 }

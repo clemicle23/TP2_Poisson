@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class Fenetre extends Application {
@@ -31,7 +32,7 @@ public class Fenetre extends Application {
     private String paletteCouleur;
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException{
 
         dessinsPoissons = new ArrayList<DessinPoisson>();
         dessinsNourritures = new ArrayList<DessinNourriture>();
@@ -68,44 +69,56 @@ public class Fenetre extends Application {
             switch (paletteType){
                 case ("poisson"):
                     Poisson nouveauPoisson = null;
-                    switch (paletteCouleur){
-                        case("rouge"):
-                            nouveauPoisson = lac.addPoisson(PoissonRouge.class, 0.1f, (float) mousex, (float) mousey);
-                            break;
-                        case("bleu"):
-                            nouveauPoisson = lac.addPoisson(PoissonBleu.class,0.1f, (float) mousex, (float) mousey);
-                            break;
-                        case("vert"):
-                            nouveauPoisson = lac.addPoisson(PoissonVert.class,0.1f, (float) mousex, (float) mousey);
-                            break;
-                    }
-                    Rectangle poissonRectangle = new Rectangle(nouveauPoisson.getCoordX(),nouveauPoisson.getCoordY(),taillePoisson,taillePoisson);
-                    poissonRectangle.setFill(nouveauPoisson.getColor());
-                    drawPane.getChildren().add(poissonRectangle);
+                    try{
+                        switch (paletteCouleur) {
+                            case ("rouge"):
+                                nouveauPoisson = lac.addPoisson(PoissonRouge.class, 0.1f, (float) mousex, (float) mousey);
+                                break;
+                            case ("bleu"):
+                                nouveauPoisson = lac.addPoisson(PoissonBleu.class, 0.1f, (float) mousex, (float) mousey);
+                                break;
+                            case ("vert"):
+                                nouveauPoisson = lac.addPoisson(PoissonVert.class, 0.1f, (float) mousex, (float) mousey);
+                                break;
+                        }
+                        Rectangle poissonRectangle = new Rectangle(nouveauPoisson.getCoordX(),nouveauPoisson.getCoordY(),taillePoisson,taillePoisson);
+                        poissonRectangle.setFill(nouveauPoisson.getColor());
+                        drawPane.getChildren().add(poissonRectangle);
 
-                    DessinPoisson nouveauDessinPoisson = new DessinPoisson(nouveauPoisson, poissonRectangle);
-                    dessinsPoissons.add(nouveauDessinPoisson);
-                    break;
+                        DessinPoisson nouveauDessinPoisson = new DessinPoisson(nouveauPoisson, poissonRectangle);
+                        dessinsPoissons.add(nouveauDessinPoisson);
+                        break;
+                    }
+                    catch(NoSuchMethodException | InstantiationException |
+                            IllegalAccessException | IllegalArgumentException | InvocationTargetException e){
+                        System.out.println(e.getMessage());
+                    }
                 case ("nourriture"):
                     Nourriture nouvelleNourriture = null;
-                    switch (paletteCouleur){
-                        case("rouge"):
-                            nouvelleNourriture = lac.addNourriture(NourritureRouge.class, (float) mousex,(float) mousey);
-                            break;
-                        case("bleu"):
-                            nouvelleNourriture = lac.addNourriture(NourritureBleu.class, (float) mousex,(float) mousey);
-                            break;
-                        case("vert"):
-                            nouvelleNourriture = lac.addNourriture(NourritureVert.class, (float) mousex,(float) mousey);
-                            break;
-                    }
-                    Rectangle nourritureRectangle = new Rectangle(mousex, mousey,tailleNourriture,tailleNourriture);
-                    nourritureRectangle.setFill(nouvelleNourriture.getColor());
-                    drawPane.getChildren().add(nourritureRectangle);
+                    try {
+                        switch (paletteCouleur) {
+                            case ("rouge"):
+                                nouvelleNourriture = lac.addNourriture(NourritureRouge.class, (float) mousex, (float) mousey);
+                                break;
+                            case ("bleu"):
+                                nouvelleNourriture = lac.addNourriture(NourritureBleu.class, (float) mousex, (float) mousey);
+                                break;
+                            case ("vert"):
+                                nouvelleNourriture = lac.addNourriture(NourritureVert.class, (float) mousex, (float) mousey);
+                                break;
+                        }
+                        Rectangle nourritureRectangle = new Rectangle(mousex, mousey,tailleNourriture,tailleNourriture);
+                        nourritureRectangle.setFill(nouvelleNourriture.getColor());
+                        drawPane.getChildren().add(nourritureRectangle);
 
-                    DessinNourriture nouveauDessinNourriture = new DessinNourriture(nouvelleNourriture, nourritureRectangle);
-                    dessinsNourritures.add(nouveauDessinNourriture);
-                    break;
+                        DessinNourriture nouveauDessinNourriture = new DessinNourriture(nouvelleNourriture, nourritureRectangle);
+                        dessinsNourritures.add(nouveauDessinNourriture);
+                        break;
+                    }
+                    catch(NoSuchMethodException | InstantiationException |
+                          IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                        System.out.println(e.getMessage());
+                    }
             }
         });
 
@@ -181,6 +194,11 @@ public class Fenetre extends Application {
         }
     }
 
+    /**
+     * Permet de supprimer une nourriture de l'affichage
+     * lorsqu'elle a été mangée, ainsi que de la supprimer
+     * de la liste des nourritures du lac.
+     */
     public void clean(){
         for (DessinNourriture dessinNourriture : dessinsNourritures){
             if (!dessinNourriture.getNourriture().isAvailable()){

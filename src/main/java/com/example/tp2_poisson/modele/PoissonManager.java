@@ -1,5 +1,8 @@
 package com.example.tp2_poisson.modele;
 
+/**
+ * Thread qui contient un poisson et gère son exécution
+ */
 public class PoissonManager implements Runnable {
     private Poisson poisson;
     private Lac lac;
@@ -10,6 +13,13 @@ public class PoissonManager implements Runnable {
     public void SetPoisson(Poisson newPoisson){
         poisson = newPoisson;
     }
+
+    /**
+     * Routine d'exécution du poisson :
+     * - Trouver la nourriture la plus proche
+     * - Avancer vers celle-ci
+     * - Essayer de la manger si elle est proche
+     */
     @Override
     public void run() {
         while(!Thread.currentThread().isInterrupted()){

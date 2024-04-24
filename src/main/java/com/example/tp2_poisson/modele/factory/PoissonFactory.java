@@ -1,25 +1,41 @@
 package com.example.tp2_poisson.modele.factory;
 import com.example.tp2_poisson.modele.Poisson;
-import com.example.tp2_poisson.modele.PoissonBleu;
-import com.example.tp2_poisson.modele.PoissonRouge;
-import com.example.tp2_poisson.modele.PoissonVert;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
+/**
+ * Instantie tous les types de poissons.
+ */
 public class PoissonFactory{
-    private static Map<Class, ConcretePoissonFactory> poissonClasses = new HashMap<>();
 
-    static{
-        poissonClasses.put(PoissonRouge.class, new PoissonRougeFactory());
-        poissonClasses.put(PoissonBleu.class, new PoissonBleuFactory());
-        poissonClasses.put(PoissonVert.class, new PoissonVertFactory());
-    }
-
-    public static Poisson newPoisson(Class c, float speed, float X, float Y) throws IllegalArgumentException{
-        if (!poissonClasses.containsKey(c)){
-            throw new IllegalArgumentException("Invalid Poisson " + c);
+    /**
+     * Crée un poisson du type désiré
+     * @param c Sous-classe de Poisson à créer
+     * @param speed vitesse du poisson
+     * @param X position horizontale initiale du poisson
+     * @param Y position verticale initiale du poisson
+     * @return le poisson créé
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
+    public static Poisson newPoisson(Class c, float speed, float X, float Y) throws NoSuchMethodException,
+            InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        //Vérification que le type désiré est un sous-type de Poisson
+        if (c.getSuperclass().getCanonicalName() != Poisson.class.getCanonicalName()){
+            throw new IllegalArgumentException("Invalid Poisson " + c.getSimpleName());
         }
-        return (Poisson) poissonClasses.get(c).build(speed, X, Y);
+        //Récupération du constructeur et création du poisson
+        Class[] parameterTypes = {float.class, float.class, float.class};
+        try{
+        Constructor constructor = c.getConstructor(parameterTypes);
+            return (Poisson) constructor.newInstance(speed, X, Y);
+        }
+        catch(NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e){
+            throw(e);
+        }
     }
 }

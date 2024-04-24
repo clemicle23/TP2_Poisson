@@ -2,6 +2,9 @@ package com.example.tp2_poisson.modele;
 
 import javafx.scene.paint.Color;
 
+/**
+ * Représente une nourriture dans le lac
+ */
 public class Nourriture {
     public float coordX;
     public float coordY;
@@ -26,6 +29,12 @@ public class Nourriture {
         this.color = color;
     }
 
+    /**
+     * Mange la nourriture ssi elle n'est pas déjà mangée
+     * Ne peut être appellée que par un thread à la fois grâce au mot-clef synchronised.
+     * Cela assure qe 2 poissons ne peuvent manger la même nourriture, même si ils arrivent en même temps
+     * @return true si la nourriture a été mangée, false sinon (car déjà mangée)
+     */
     public synchronized boolean eat(){
 
         if (available){
