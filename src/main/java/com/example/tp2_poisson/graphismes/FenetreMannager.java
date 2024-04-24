@@ -9,6 +9,11 @@ public class FenetreMannager implements Runnable {
     public FenetreMannager(Fenetre fenetre){
         this.fenetre = fenetre;
     }
+
+    /**
+     * S'occupe du thread qui affiche en continu les poissons et la nourriture sur l'écran,
+     * et nettoie les nourritures qui ont été mangées.
+     */
     @Override
     public void run() {
         while(!Thread.currentThread().isInterrupted()){

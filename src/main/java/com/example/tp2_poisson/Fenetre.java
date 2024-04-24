@@ -52,10 +52,14 @@ public class Fenetre extends Application {
         screen.setLeft(buttonPane);
         screen.setCenter(drawPane);
 
-        Scene scene = new Scene(screen, 320, 240);
+        Scene scene = new Scene(screen, 600, 400);
 
-        stage.setTitle("Hello!");
+        stage.setTitle("Poissons dans un lac");
 
+        /**
+         * Détection du clic de la souris sur le lac, l'effet change en fonction de
+         * la palette qui a été sélectionnée grâce aux boutons
+         */
         drawPane.setOnMouseClicked(event -> {
             double mousex = event.getSceneX() - drawPane.getLayoutX();
             double mousey = event.getSceneY() - - drawPane.getLayoutY();
@@ -114,7 +118,9 @@ public class Fenetre extends Application {
 
     }
 
-
+    /**
+     * Met en place la partie de l'interface avec les boutons
+     */
     public void setupButtonPane(){
         Label type = new Label("Type d'entité :");
         Label couleur = new Label("Couleur de l'entité :");
@@ -154,6 +160,10 @@ public class Fenetre extends Application {
 
     }
 
+    /**
+     * Permet d'actualiser l'affichage en mettant à jour
+     * la position du rectangle sur l'interface graphique
+     */
     public void afficheElements(){
         if (lac.getPoissons() != null){
             for (DessinPoisson dessinPoisson: dessinsPoissons) {
@@ -181,7 +191,4 @@ public class Fenetre extends Application {
         lac.cleanNourriture();
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
 }
